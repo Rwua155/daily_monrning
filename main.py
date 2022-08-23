@@ -23,9 +23,11 @@ def get_weather():
   res = requests.get(url).json()
   weather = res['data']['list'][0]
   weather1 = res['data']['list'][1]
-  dqtq = weather['low']+weather['high']
-  mrtq = weather1['low']+weather1['high']
-  return weather['weather'], dqtq,weather['date'],weather1['weather'], mrtq,weather1['date']
+  dqtqd = weather['low']
+  dqtqg = weather['high']
+  mrtqd = weather1['low']
+  mrtqg =weather1['high']
+  return weather['weather'], dqtqd,dqtqg,weather['date'],weather1['weather'], mrtqd,mrtqg,weather1['date']
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
   return delta.days
@@ -49,8 +51,9 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, temperature,lastTime,wea1, temperature1,lastTime1 = get_weather()
+wea, dqd,dqg,lastTime,wea1, mqd,mqg,lastTime1 = get_weather()
 # data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
-data = {"weather":{"value":wea},"temperature":{"value":temperature},"lastTime":{"value":lastTime},"weather1":{"value":wea1},"temperature1":{"value":temperature1},"lastTime1":{"value":lastTime1}}
+data = {"weather":{"value":wea},"dqd":{"value":dqd},"dqg":{"value":dqg},"lastTime":{"value":lastTime},
+        "weather1":{"value":wea1},"mqd":{"value":mqd},"mqg":{"value":mqg},"lastTime1":{"value":lastTime1}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
