@@ -53,7 +53,7 @@ client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 wea, dqd,dqg,lastTime,wea1, mqd,mqg,lastTime1 = get_weather()
 # data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
-data = {"weather":{"value":wea},"dqd":{"value":dqd},"dqg":{"value":dqg},"lastTime":{"value":lastTime},
-        "weather1":{"value":wea1},"mqd":{"value":mqd},"mqg":{"value":mqg},"lastTime1":{"value":lastTime1}}
+data = {"weather":{"value":wea,"color":get_random_color()},"dqd":{"value":dqd,"color":get_random_color()},"dqg":{"value":dqg,"color":get_random_color()},"lastTime":{"value":lastTime,"color":get_random_color()},
+        "weather1":{"value":wea1,"color":get_random_color()},"mqd":{"value":mqd,"color":get_random_color()},"mqg":{"value":mqg,"color":get_random_color()},"lastTime1":{"value":lastTime1,"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
