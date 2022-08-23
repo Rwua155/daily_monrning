@@ -23,8 +23,9 @@ def get_weather():
   res = requests.get(url).json()
   weather = res['data']['list'][0]
   weather1 = res['data']['list'][1]
-  return weather['weather'], math.floor(weather['temp']),weather1['weather'], math.floor(weather1['temp'])
-
+  dqtq = weather['low']+weather['high']
+  mrtq = weather1['low']+weather1['high']
+  return weather['weather'], dqtq,weather['date'],weather1['weather'], mrtq,weather1['date']
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
   return delta.days
@@ -48,8 +49,9 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, temperature,wea1, temperature1 = get_weather()
+wea, temperature,lastTime,wea1, temperature1,lastTime1 = get_weather()
 # data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
-data = {"weather":{"value":wea},"temperature":{"value":temperature},"weather1":{"value":wea1},"temperature1":{"value":temperature1},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"weather":{"value":wea},"temperature":{"value":temperature},"lastTime":{"value":lastTime},
+        "weather1":{"value":wea1},"temperature1":{"value":temperature1},"lastTime1":{"value":lastTime1}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
