@@ -23,10 +23,10 @@ def get_weather():
   res = requests.get(url).json()
   weather = res['data']['list'][0]
   weather1 = res['data']['list'][1]
-  dqtqd = weather['low']
-  dqtqg = weather['high']
-  mrtqd = weather1['low']
-  mrtqg =weather1['high']
+  dqtqd =  math.floor(weather['low'])
+  dqtqg = math.floor(weather['high'])
+  mrtqd = math.floor(weather1['low'])
+  mrtqg =math.floor(weather1['high'])
   return weather['weather'], dqtqd,dqtqg,weather['date'],weather1['weather'], mrtqd,mrtqg,weather1['date']
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
