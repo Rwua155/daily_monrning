@@ -27,7 +27,10 @@ def get_weather():
   dqtqg = str(math.floor(weather['high']))+'℃'
   mrtqd = str(math.floor(weather1['low']))+'℃'
   mrtqg =str(math.floor(weather1['high']))+'℃'
-  return weather['weather'], dqtqd,dqtqg,weather['date'],weather1['weather'], mrtqd,mrtqg,weather1['date']
+  fh = '天气: '+weather['weather'] + '  ' + dqtqd + ' ~ ' + dqtqg
+  mr = '天气: '+weather['weather'] + '  ' + dqtqd + ' ~ ' + dqtqg
+  # return weather['weather'], dqtqd,dqtqg,weather['date'],weather1['weather'], mrtqd,mrtqg,weather1['date']
+  return fh,mr,weather['date'],weather1['date']
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
   return delta.days
@@ -51,9 +54,9 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, dqd,dqg,lastTime,wea1, mqd,mqg,lastTime1 = get_weather()
+wea, wea1,lastTime,lastTime1 = get_weather()
 # data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
-data = {"weather":{"value":wea,"color":get_random_color()},"dqd":{"value":dqd,"color":get_random_color()},"dqg":{"value":dqg,"color":get_random_color()},"lastTime":{"value":lastTime,"color":get_random_color()},
-        "weather1":{"value":wea1,"color":get_random_color()},"mqd":{"value":mqd,"color":get_random_color()},"mqg":{"value":mqg,"color":get_random_color()},"lastTime1":{"value":lastTime1,"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"weather":{"value":wea,"color":get_random_color()},"lastTime":{"value":lastTime,"color":get_random_color()},
+        "weather1":{"value":wea1,"color":get_random_color()},"lastTime1":{"value":lastTime1,"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
