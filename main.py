@@ -27,8 +27,8 @@ def get_weather():
   dqtqg = str(math.floor(weather['high']))+'℃'
   mrtqd = str(math.floor(weather1['low']))+'℃'
   mrtqg =str(math.floor(weather1['high']))+'℃'
-  fh = '天气: '+weather['weather'] + '  ' + dqtqd + ' ~ ' + dqtqg
-  mr = '天气: '+weather1['weather'] + '  ' + mrtqd + ' ~ ' + mrtqg
+  fh = city + ' 今日天气:  '+weather['weather'] + '  ' + dqtqd + ' ~ ' + dqtqg
+  mr = city + ' 明日天气:  '+weather1['weather'] + '  ' + mrtqd + ' ~ ' + mrtqg
   return fh,mr,weather['date'],weather1['date']
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -56,5 +56,7 @@ wm = WeChatMessage(client)
 wea, wea1,lastTime,lastTime1 = get_weather()
 data = {"weather":{"value":wea,"color":get_random_color()},"lastTime":{"value":lastTime,"color":get_random_color()},
         "weather1":{"value":wea1,"color":get_random_color()},"lastTime1":{"value":lastTime1,"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
+
+
 res = wm.send_template(user_id, template_id, data)
 print(res)
