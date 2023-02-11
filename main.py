@@ -19,17 +19,37 @@ template_id = os.environ["TEMPLATE_ID"]
 
 
 def get_weather():
-  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
-  res = requests.get(url).json()
-  weather = res['data']['list'][0]
-  weather1 = res['data']['list'][1]
-  dqtqd =  str(math.floor(weather['low']))+'℃'
-  dqtqg = str(math.floor(weather['high']))+'℃'
-  mrtqd = str(math.floor(weather1['low']))+'℃'
-  mrtqg =str(math.floor(weather1['high']))+'℃'
-  fh = city + ' 今日天气:  '+weather['weather'] + '  ' + dqtqd + ' ~ ' + dqtqg
-  mr = city + ' 明日天气:  '+weather1['weather'] + '  ' + mrtqd + ' ~ ' + mrtqg
-  return fh,mr,weather['date'],weather1['date']
+    url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=深圳"
+    res = requests.get(url).json()
+
+    code = res['code']
+    if code == 0:
+        toDayWeather = res['data']['list'][0]
+        toMorrowWeather = res['data']['list'][1]
+        datq = toDayWeather['weather'];
+        mrtq = toMorrowWeather['weather'];
+        dqtqd = str(math.floor(toDayWeather['low']))+'℃'
+        dqtqg = str(math.floor(toDayWeather['high']))+'℃'
+        mrtqd = str(math.floor(toMorrowWeather['low']))+'℃'
+        mrtqg = str(math.floor(toMorrowWeather['high']))+'℃'
+           
+    else:
+        url = "https://restapi.amap.com/v3/weather/weatherInfo?key=26111970b11fc6e5141d2de555e40f36&city=440300&extensions=all&output=JSON"
+        res = requests.get(url).json()
+        toDayWeather = res['forecasts'][0]['casts'][0]
+        toMorrowWeather = res['forecasts'][0]['casts'][1]
+        datq = toDayWeather['dayweather'];
+        mrtq = toMorrowWeather['dayweather'];
+        dqtqd = str(toDayWeather['nighttemp'])+'℃'
+        dqtqg = str(toDayWeather['daytemp'])+'℃'
+        mrtqd = str(toMorrowWeather['nighttemp'])+'℃'
+        mrtqg = str(toMorrowWeather['daytemp'])+'℃'
+
+    fh = city + ' 今日天气:  '+datq + '  ' + dqtqd + ' ~ ' + dqtqg
+    mr = city + ' 明日天气:  '+mrtq + '  ' + mrtqd + ' ~ ' + mrtqg
+    return fh, mr, datq, mrtq
+
+
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
   return delta.days
