@@ -45,8 +45,8 @@ def get_weather():
         mrtqd = str(toMorrowWeather['nighttemp'])+'℃'
         mrtqg = str(toMorrowWeather['daytemp'])+'℃'
 
-    fh = city + ' 今日天气:  '+datq + '  ' + dqtqd + ' ~ ' + dqtqg
-    mr = city + ' 明日天气:  '+mrtq + '  ' + mrtqd + ' ~ ' + mrtqg
+    fh = '深圳' + ' 今日天气:  '+datq + '  ' + dqtqd + ' ~ ' + dqtqg
+    mr = '深圳' + ' 明日天气:  '+mrtq + '  ' + mrtqd + ' ~ ' + mrtqg
     return fh, mr, datq, mrtq
 
 
