@@ -112,10 +112,10 @@ def get_weather():
         toMorrowWeather = res['daily'][1]
         datq = toDayWeather['textDay']+'和风'
         mrtq = toMorrowWeather['textDay']
-        dqtqd = str(math.floor(toDayWeather['tempMin']))+'℃'
-        dqtqg = str(math.floor(toDayWeather['tempMax']))+'℃'
-        mrtqd = str(math.floor(toMorrowWeather['tempMin']))+'℃'
-        mrtqg = str(math.floor(toMorrowWeather['tempMax']))+'℃'
+        dqtqd = str(toDayWeather['tempMin'])+'℃'
+        dqtqg = str(toDayWeather['tempMax'])+'℃'
+        mrtqd = str(toMorrowWeather['tempMin'])+'℃'
+        mrtqg = str(toMorrowWeather['tempMax'])+'℃'
 
     else:
         url = "https://restapi.amap.com/v3/weather/weatherInfo?key=26111970b11fc6e5141d2de555e40f36&city=440300&extensions=all&output=JSON"
