@@ -103,11 +103,11 @@ import random
 
 
 def get_weather():
-    url = "https://devapi.qweather.com/v7/weather/3d?location=101010100&key=41f149042b9e41a0ae2320cdcdb16458"
+    url = "https://devapi.qweather.com/v7/weather/3d?location=101280601&key=41f149042b9e41a0ae2320cdcdb16458"
     res = requests.get(url).json()
 
     code = res['code']
-    if code == 200:
+    if code == '200':
         toDayWeather = res['daily'][0]
         toMorrowWeather = res['daily'][1]
         datq = toDayWeather['textDay']+'和风'
