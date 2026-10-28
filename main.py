@@ -36,16 +36,30 @@ logging.basicConfig(
 log = logging.getLogger("morning")
 
 # ---------------------------------------------------------------- 配置
-APP_ID = os.environ.get("APP_ID", "wx6a015110f0bb2145")
-APP_SECRET = os.environ.get("APP_SECRET", "0598dca7b68a709e2699d4abf39b0307")
-TEMPLATE_ID = os.environ.get("TEMPLATE_ID", "pnLf8O1UEMxnqsCj0PGf6g3HhMp5IrDEORo8zYVWddQ")
-USER_ID = os.environ.get("USER_ID", "o90D15m499vdYkJrvn1uZVSTV6Y4")
+def env(name, default=""):
+    """读环境变量；未配置或值为空串时回退到默认值。
+
+    注意：GitHub Actions 里如果 Secrets 没配，${{ secrets.X }} 会注入空字符串，
+    此时 os.environ.get(name, default) 拿到的是 "" 而不是 default，所以必须这样兜一层。
+    """
+    value = os.environ.get(name, "").strip()
+    if value:
+        return value
+    if default:
+        log.warning("环境变量 %s 未配置，使用代码内默认值", name)
+    return default
+
+
+APP_ID = env("APP_ID", "wx6a015110f0bb2145")
+APP_SECRET = env("APP_SECRET", "0598dca7b68a709e2699d4abf39b0307")
+TEMPLATE_ID = env("TEMPLATE_ID", "pnLf8O1UEMxnqsCj0PGf6g3HhMp5IrDEORo8zYVWddQ")
+USER_ID = env("USER_ID", "o90D15m499vdYkJrvn1uZVSTV6Y4")
 
 # 在一起的第一天（模板里是「和吴世婷在一起的第 X 天」，所以 6 月 6 日算第 1 天）
-START_DATE = os.environ.get("START_DATE", "2026-06-06").strip()
+START_DATE = env("START_DATE", "2026-06-06")
 
 # 和风天气 free key：两个域名都试（老账号 devapi，新账号 api）
-QWEATHER_KEY = os.environ.get("QWEATHER_KEY", "41f149042b9e41a0ae2320cdcdb16458")
+QWEATHER_KEY = env("QWEATHER_KEY", "41f149042b9e41a0ae2320cdcdb16458")
 QWEATHER_HOSTS = ("devapi.qweather.com", "api.qweather.com")
 
 # 两个城市的 location id：深圳、赣州大余
