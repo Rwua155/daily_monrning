@@ -1,32 +1,47 @@
 name: morning
 on:
   schedule:
-  - cron:  '0 0 * * *'
+  # UTC 23:00 = 北京时间 07:00。GitHub 定时任务高峰期通常会延迟 20~100 分钟，
+  # 所以故意提前一小时提交，实际送达时间大约在早上 7:20~8:40。
+  - cron: '0 23 * * *'
   workflow_dispatch:
+
+# 只读仓库内容，够用了（最小权限原则）
+permissions:
+  contents: read
+
+# 同一时间只允许一个实例，避免手动触发撞上定时任务导致重复推送
+concurrency:
+  group: morning-push
+  cancel-in-progress: false
 
 jobs:
   send_message:
     runs-on: ubuntu-latest
     name: send morning to your girlfriend
+    timeout-minutes: 10
 
     steps:
     - name: checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: master
 
-    - name: sender
-      uses: actions/setup-python@v2
+    - name: setup python
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.12'
         architecture: 'x64'
-    - run: pip install -r ./requirements.txt && python ./main.py
+        cache: 'pip'
 
-    env:
-      APP_ID: ${{ secrets.APP_ID }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
-      TEMPLATE_ID: ${{ secrets.TEMPLATE_ID }}
-      USER_ID: ${{ secrets.USER_ID }}
-      START_DATE: ${{ secrets.START_DATE }}
-      BIRTHDAY: ${{ secrets.BIRTHDAY }}
-      CITY: ${{ secrets.CITY }}
+    - name: install deps and send
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r ./requirements.txt
+        python ./main.py
+      env:
+        APP_ID: ${{ secrets.APP_ID }}
+        APP_SECRET: ${{ secrets.APP_SECRET }}
+        TEMPLATE_ID: ${{ secrets.TEMPLATE_ID }}
+        USER_ID: ${{ secrets.USER_ID }}
+        START_DATE: ${{ secrets.START_DATE }}

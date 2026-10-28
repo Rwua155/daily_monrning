@@ -1,0 +1,5 @@
+# 统一使用 LF，避免 Windows 下编辑后整文件换行符被改写
+* text=auto eol=lf
+
+# requirements.txt 必须保持纯文本 UTF-8，否则 pip 会解析失败
+requirements.txt text eol=lf
